@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Pyblog{% endblock %}</title>
+	<!-- 引入 Bootstrap CSS -->
+	{{bootstrap.load_css()}}
+	{% block head %}{% endblock %}
+</head>
+
+<body>
+	<!-- 导航栏 -->
+	{% include "layout/nav.html" %}
+
+	<!-- 主内容区域 -->
+	<div class="container mt-4">
+		{% block content %}
+		<p>Welcome to Flask App!</p>
+		{% endblock %}
+	</div>
+
+	<!-- 页脚 -->
+	{% include "layout/footer.html" %}
+
+	<!-- 引入 Bootstrap JS 和依赖 -->
+	{{bootstrap.load_js()}}
+	{% block scripts %}{% endblock %}
+</body>
+
+</html>
