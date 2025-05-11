@@ -1,0 +1,20 @@
+{% extends "layout/base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="card mx-auto" style="width: 48rem;">
+	<img src="{{url_for('static',filename='images/抱美女.jpg')}}" class="card-img-top img-fluid" alt="无法加载图片">
+	<div class="card-body">
+		<h3 class="card-title">个人介绍</h3>
+		<p class="card-text">国家一级蛋炒饭鉴赏师</p>
+	</div>
+	<ul class="list-group list-group-flush">
+		<li class="list-group-item">CPP程序员</li>
+		<li class="list-group-item">Rust学习者</li>
+	</ul>
+	<div class="card-body">
+		<a href="https://github.com/SimonYen" target="_blank" class="card-link">Github</a>
+	</div>
+</div>
+{% endblock %}

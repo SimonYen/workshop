@@ -12,4 +12,4 @@ def home():
 
 @main_bp.route("/about")
 def about():
-    return "This is the About page."
+    return render_template("about.html")

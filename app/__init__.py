@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap5
 from config import config
+from .models import DB
 
 
 def create_app(config_name="default"):
@@ -18,9 +19,6 @@ def create_app(config_name="default"):
     bootstrap = Bootstrap5(app)
     app.config["BOOTSTRAP_SERVE_LOCAL"] = True
     app.config["BOOTSTRAP_BOOTSWATCH_THEME"] = "flatly"
-    # from .extensions import db, login_manager
-    # db.init_app(app)
-    # login_manager.init_app(app)
 
     # 注册蓝图
     from .routes import blueprints
