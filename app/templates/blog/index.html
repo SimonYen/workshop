@@ -1,0 +1,14 @@
+{% extends "layout/base.html" %}
+
+{% block title %}我的博客{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-grid gap-2">
+            <a class="btn btn-primary btn-lg" role="button" href="{{ url_for('admin.blog_create')}}">➕新建文章</a>
+            <button class="btn btn-secondary btn-lg" type="button">🔍搜索文章</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

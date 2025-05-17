@@ -1,0 +1,22 @@
+{% extends "layout/base.html" %}
+
+{% block scripts %}
+{{ ckeditor.load() }}
+{% endblock %}
+
+
+{% block title %}博客编辑器{% endblock %}
+
+{% block content %}
+{% from 'bootstrap5/form.html' import render_field %}
+
+<form method="post" action="{{ url_for('admin.blog_create') }}">
+    {{ form.csrf_token() }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.summary) }}
+    {{ render_field(form.content) }}
+    {{ render_field(form.tags) }}
+    {{ render_field(form.is_top) }}
+    {{ render_field(form.submit) }}
+</form>
+{% endblock %}

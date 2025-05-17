@@ -24,9 +24,13 @@ def init_db(db):
         return
     # 设置所有模型的数据库
     from .admin import Admin
+    from .post import Post
+    from .archive import Archive
 
     Admin._meta.database = DB  # 显式设置 Admin 的数据库
+    Post._meta.database = DB  # 显式设置 Post 的数据库
+    Archive._meta.database = DB  # 显式设置 Archive 的数据库
     # 连接数据库
     DB.connect()
     # 创建表
-    DB.create_tables([Admin])
+    DB.create_tables([Admin, Post, Archive])
