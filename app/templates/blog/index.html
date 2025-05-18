@@ -11,4 +11,66 @@
         </div>
     </div>
 </div>
+<!--遍历所有帖子-->
+<div class="row mt-5">
+    {% for post in posts %}
+    <div class="col-md-4 col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            <img src="" class="card-img-top" alt="{{ post.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">作者：{{ post.author.username }}</h6>
+                <p class="card-text">{{ post.summary }}</p>
+                <p class="card-text">
+                    <small class="text-muted">创建于 {{ post.updated_at}}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">创建于 {{ post.created_at}}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">标签: {{ post.tags }}</small>
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-sm btn-outline-primary">编辑</a>
+                        <a href="#" class="btn btn-sm btn-outline-info">封面</a>
+                        <a href="#" class="btn btn-sm btn-outline-warning">背景</a>
+                        <a href="#" class="btn btn-sm btn-outline-danger">删除</a>
+                    </div>
+                    <small class="text-muted">是否置顶: {{ post.is_top }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!--分页-->
+<div class="d-flex justify-content-center">
+    <nav aria-label="page-navigation">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="{{url_for('admin.blog_index', page = 1)}}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% if prev_page %}
+            <li class="page-item"><a class="page-link"
+                    href="{{url_for('admin.blog_index', page = prev_page)}}">{{prev_page}}</a></li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link" href="{{url_for('admin.blog_index', page = current_page)}}"
+                    aria-current="page">{{current_page}}</a>
+            </li>
+            {% if next_page %}
+            <li class="page-item"><a class="page-link"
+                    href="{{url_for('admin.blog_index', page = next_page)}}">{{next_page}}</a></li>
+            {% endif %}
+            <li class="page-item">
+                <a class="page-link" href="{{url_for('admin.blog_index', page = total_pages)}}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 {% endblock %}

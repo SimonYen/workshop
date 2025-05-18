@@ -2,6 +2,8 @@
 
 {% block scripts %}
 {{ ckeditor.load() }}
+{{ ckeditor.config(name='content') }}
+{{ ckeditor.load_code_theme() }}
 {% endblock %}
 
 

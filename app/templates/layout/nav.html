@@ -16,7 +16,10 @@
                 </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('admin.blog_index')}}">📓博客管理</a>
+                    <a class="nav-link" href="{{ url_for('admin.blog_index')}}">📓文章管理</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin.blog_index')}}">🗃存档管理</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout')}}">🔑登出</a>

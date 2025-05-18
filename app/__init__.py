@@ -2,6 +2,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
+from flask_wtf import CSRFProtect
 from config import config
 from .models import DB, init_db, admin
 
@@ -43,6 +44,10 @@ def create_app(config_name="default"):
     CKEditor(app)
     app.config["CKEDITOR_SERVE_LOCAL"] = True
     app.config["CKEDITOR_PKG_TYPE"] = "full"
+    CSRFProtect(app)
+    app.config["CKEDITOR_ENABLE_CSRF"] = True
+    app.config["CKEDITOR_ENABLE_CODESNIPPET"] = True
+    app.config["CKEDITOR_FILE_UPLOADER"] = "main.ck_upload"
     from peewee import PostgresqlDatabase, SqliteDatabase
 
     # 初始化数据库

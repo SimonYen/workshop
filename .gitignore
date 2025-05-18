@@ -12,3 +12,6 @@ __pycache__/
 CFG.toml
 
 dev.db
+
+# 忽略博客上传的图片
+app/static/blog
