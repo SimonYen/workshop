@@ -8,10 +8,11 @@ __pycache__/
 # 忽略虚拟环境
 .venv/
 
-# 忽略配置文件
-CFG.toml
+# 忽略数据库文件
+workshop.db
 
-dev.db
+# 忽略uv.lock
+uv.lock
 
 # 忽略博客上传的图片
 app/static/blog

@@ -7,9 +7,10 @@ class Config:
     
     def __init__(self):
         # 加载配置文件
-        self.data = tomllib.load(open('CFG.toml', 'rb'))
+        self.data = tomllib.load(open('app.toml', 'rb'))
         # 将配置项设置为类属性而不是实例属性
         Config.SECRET_KEY = self.data['default']['SECRET_KEY']
+        Config.DB_URL=self.data['default']['DB_URL']
 
 
 class DevelopmentConfig(Config):
@@ -22,7 +23,6 @@ class DevelopmentConfig(Config):
         data = self.data['development']
         DevelopmentConfig.HOST = data['HOST']
         DevelopmentConfig.PORT = data['PORT']
-        DevelopmentConfig.DB_URL = data['DB_URL']
 
 
 class ProductionConfig(Config):

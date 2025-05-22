@@ -1,0 +1,7 @@
+[default]
+SECRET_KEY = 'keep it secret'
+DB_URL = 'workshop.db'
+
+[development]
+HOST = '127.0.0.1'
+PORT = 9999
