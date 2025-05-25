@@ -7,11 +7,31 @@
 {% endblock %}
 
 
-{% block title %}博客编辑器{% endblock %}
+{% block title %}
+
+{% if post %}
+修改文章《{{ post.title }}》
+{% else %}
+新建文章
+{% endif %}
+
+{% endblock %}
 
 {% block content %}
 {% from 'bootstrap5/form.html' import render_field %}
 
+
+{% if post %}
+<form method="post" action="{{ url_for('admin.blog_edit',post_id = post.id) }}">
+    {{ form.csrf_token() }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.summary) }}
+    {{ render_field(form.content) }}
+    {{ render_field(form.tags) }}
+    {{ render_field(form.is_top) }}
+    {{ render_field(form.submit) }}
+</form>
+{% else%}
 <form method="post" action="{{ url_for('admin.blog_create') }}">
     {{ form.csrf_token() }}
     {{ render_field(form.title) }}
@@ -21,4 +41,6 @@
     {{ render_field(form.is_top) }}
     {{ render_field(form.submit) }}
 </form>
+{% endif %}
+
 {% endblock %}

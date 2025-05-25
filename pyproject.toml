@@ -7,8 +7,9 @@ requires-python = ">=3.13"
 dependencies = [
     "bootstrap-flask>=2.5.0",
     "flask>=3.1.1",
-    "flask-ckeditor[full]>=1.0.0",
+    "flask-ckeditor>=1.0.0",
     "flask-login>=0.6.3",
+    "flask-moment>=1.0.6",
     "flask-wtf>=1.2.2",
     "peewee>=3.18.1",
 ]

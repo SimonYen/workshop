@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 from flask_wtf import CSRFProtect
+from flask_moment import Moment
 from config import config
 from .models import DB, init_db, admin
 
@@ -37,6 +38,7 @@ def create_app(config_name="default"):
     app.config.from_object(config[config_name])
 
     # 注册扩展（如数据库、登录管理等）
+    Moment(app)
     Bootstrap5(app)
     app.config["BOOTSTRAP_SERVE_LOCAL"] = True
     app.config["BOOTSTRAP_BOOTSWATCH_THEME"] = "zephyr"
