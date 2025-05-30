@@ -4,7 +4,6 @@
 
 {% block head %}
 {{ moment.include_moment() }}
-{{ moment.locale(auto_detect=True) }}
 {% endblock %}
 
 {% block content %}
@@ -21,17 +20,24 @@
     {% for post in posts %}
     <div class="col-md-4 col-lg-3 col-sm-6 mb-4">
         <div class="card">
+            {% if post.cover %}
             <img src="{{url_for('static',filename='blog/cover/' + post.cover)}}" class="card-img-top"
                 alt="{{ post.title }}">
+            {% else %}
+            <img src="" class="card-img-top" alt="{{ post.title }}">
+            {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ post.title }}</h5>
                 <h6 class="card-subtitle mb-2 text-body-secondary">作者：{{ post.author.username }}</h6>
                 <p class="card-text">{{ post.summary }}</p>
                 <p class="card-text">
-                    <small class="text-muted">更新于 {{ moment(post.updated_at).format('YYYY年MM月 hh:mm:ss') }}</small>
+                    <small class="text-muted">更新于 {{ moment(post.updated_at, local = True).format('YYYY年MM月DD日
+                        hh:mm:ss')
+                        }}</small>
                 </p>
                 <p class="card-text">
-                    <small class="text-muted">创建于 {{ moment(post.created_at).format('YYYY年MM月 hh:mm:ss') }}</small>
+                    <small class="text-muted">创建于 {{ moment(post.created_at, local = True).format('YYYY年MM月DD日
+                        hh:mm:ss') }}</small>
                 </p>
                 <p class="card-text">
                     <small class="text-muted">是否置顶: {{ post.is_top }}</small>
@@ -41,12 +47,15 @@
                 </p>
             </div>
             <div class="card-body">
-                <div class="btn-group" role="group">
-                    <a href="{{url_for('admin.blog_edit',post_id=post.id)}}" class="btn btn-primary">编辑</a>
-                    <a href="#" class="btn btn-info" data-bs-toggle="modal"
-                        data-bs-target="#cover-modal-{{post.id}}">封面</a>
-                    <a href="#" class="btn btn-warning">背景</a>
-                    <a href="{{url_for('admin.blog_delete',post_id=post.id)}}" class="btn btn-danger">删除</a>
+                <!--至中显示-->
+                <div class="d-flex justify-content-center">
+                    <div class="btn-group" role="group">
+                        <a href="{{url_for('admin.blog_edit',post_id=post.id)}}" class="btn btn-primary">编辑</a>
+                        <a href="#" class="btn btn-info" data-bs-toggle="modal"
+                            data-bs-target="#cover-modal-{{post.id}}">封面</a>
+                        <a href="#" class="btn btn-warning">背景</a>
+                        <a href="{{url_for('admin.blog_delete',post_id=post.id)}}" class="btn btn-danger">删除</a>
+                    </div>
                 </div>
             </div>
         </div>
