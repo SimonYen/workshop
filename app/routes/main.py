@@ -1,7 +1,6 @@
-import os
-import uuid
 from flask import Blueprint, render_template, send_from_directory, request, url_for
 from flask_ckeditor import upload_fail, upload_success
+from app.utils.secure_filename import secure_filename
 
 # 创建蓝图实例
 main_bp = Blueprint("main", __name__)
@@ -29,7 +28,6 @@ def ck_files(filename):
 
     root = Path(".")
     folder = root / "static/blog/ck"
-    folder.mkdir(parents=True, exist_ok=True)
     return send_from_directory(folder, filename)
 
 
@@ -52,7 +50,7 @@ def ck_upload():
             if file.content_length > 30 * 1024 * 1024:
                 return upload_fail("文件大小超过限制，请上传小于30MB的文件")
             # 生成GUID文件名
-            filename = f"{uuid.uuid4()}{os.path.splitext(filename)[1]}"
+            filename = secure_filename(filename)
             file.save(f"app/static/blog/ck/{filename}")
             # 返回成功信息
             return upload_success(url_for("main.ck_files", filename=filename))

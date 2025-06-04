@@ -17,6 +17,7 @@ class Post(BaseModel):
     content = TextField(verbose_name="内容")
     author = ForeignKeyField(Admin, backref="posts", verbose_name="作者")
     tags = CharField(verbose_name="标签", null=True)
+    archives = CharField(verbose_name="归档", null=True)
     created_at = DateTimeField(
         default=datetime.now, verbose_name="创建时间"
     )

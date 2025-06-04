@@ -1,5 +1,4 @@
 import os
-import uuid
 from flask import (
     Blueprint,
     render_template,
@@ -11,6 +10,7 @@ from flask import (
 from flask_login import login_required, current_user
 from app.forms.editor import BlogEditorForm
 from app.models.post import Post
+from app.utils.secure_filename import secure_filename
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -153,7 +153,7 @@ def blog_cover(post_id):
         flash("文件大小超过限制，请上传小于30MB的文件", "danger")
         return redirect(url_for("admin.blog_index"))
     # 生成GUID文件名
-    filename = f"{uuid.uuid4()}{os.path.splitext(f.filename)[1]}"
+    filename = secure_filename(f.filename)
     # 检查是否存在旧封面
     if post.cover:
         # 删除旧封面
