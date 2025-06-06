@@ -6,11 +6,14 @@ from flask import (
     redirect,
     flash,
     request,
+    send_file,
 )
 from flask_login import login_required, current_user
+from bs4 import BeautifulSoup
 from app.forms.editor import BlogEditorForm
 from app.models.post import Post
 from app.utils.secure_filename import secure_filename
+from app.utils.packageing import packaging_file
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -121,6 +124,16 @@ def blog_delete(post_id):
             os.remove(os.path.join("app/static/blog/cover", post.cover))
         except FileNotFoundError:
             pass
+    # 查找出博客内容中的所有图片
+    soup = BeautifulSoup(post.content, "html.parser")
+    img_srcs = [img['src'] for img in soup.find_all('img') if img.has_attr('src')]
+    # 删除博客内容中的所有图片
+    for img_src in img_srcs:
+        img_path = os.path.join("app/static/blog/ck", img_src.split("/")[-1])
+        try:
+            os.remove(img_path)
+        except FileNotFoundError:
+            pass
     # 删除博客
     post.delete_instance()
     flash("博客删除成功", "success")
@@ -168,3 +181,19 @@ def blog_cover(post_id):
     # 返回成功消息
     flash(f"{post.title}封面上传成功", "success")
     return redirect(url_for("admin.blog_index"))
+
+@login_required
+@admin_bp.route("/blog/archive")
+def blog_archive():
+    """
+    博客归档下载
+    :return: 返回下载的归档文件
+    """
+    # 先打包一份最新的文件
+    packaging_file("blog.tar.gz")
+    return send_file(
+        "blog.tar.gz",
+        as_attachment=True,
+        download_name="blog.tar.gz",
+        mimetype="application/gzip",
+    )

@@ -16,3 +16,6 @@ uv.lock
 
 # 忽略博客上传的图片
 app/static/blog
+
+# 忽略打包文件
+blog.tar.gz
