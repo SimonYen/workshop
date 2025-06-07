@@ -19,3 +19,5 @@ app/static/blog
 
 # 忽略打包文件
 blog.tar.gz
+
+.python-version

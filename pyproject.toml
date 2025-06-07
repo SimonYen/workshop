@@ -3,7 +3,7 @@ name = "workshop"
 version = "0.1.0"
 description = "我的工作台"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.13.4",
     "bootstrap-flask>=2.5.0",
