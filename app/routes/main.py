@@ -17,13 +17,14 @@ def about():
     return render_template("about.html")
 
 
-@main_bp.route("/ck_files/<path:filename>")
+@main_bp.route("/static/blog/ck/<path:filename>")
 def ck_files(filename):
     """
     处理CKEditor上传的文件
     :param filename: 文件名
     :return: 返回文件
     """
+
     from pathlib import Path
 
     root = Path(".")

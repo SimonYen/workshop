@@ -1,0 +1,47 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+{{ moment.include_moment() }}
+{% endblock %}
+
+{% block title %}
+《{{ post.title }}》
+{% endblock %}
+
+{% block content %}
+<!--标题部分，包含文章的标题，作者，创建更新时间，标签，存档，封面等等-->
+<div class="card text-bg-dark">
+    {% if post.cover %}
+    <img src="{{ post.cover }}" class="card-img img-fluid" style="object-fit: cover; height: 300px;"
+        alt="{{ post.title }}">
+    {% else %}
+    <img src="" class="card-img-top" alt="{{ post.title }}">
+    {% endif %}
+    <div class="card-img-overlay">
+        <div class="text-center">
+            <h1 class="card-title">{{ post.title }}</h1>
+        </div>
+        <h6 class="card-subtitle mb-2">作者：{{ post.author.username }}</h6>
+        <h2 class="card-text">
+            {{ post.summary if post.summary else "暂无摘要" }}
+        </h2>
+        <p class="card-text">
+            更新于 {{ moment(post.updated_at, local = True).format('YYYY年MM月DD日
+            hh:mm:ss')
+            }}
+        </p>
+        <p class="card-text">
+            创建于 {{ moment(post.created_at, local = True).format('YYYY年MM月DD日
+            hh:mm:ss') }}
+        </p>
+        <p class="card-text">
+            标签: {{ post.tags }}
+        </p>
+    </div>
+</div>
+<div class="card mt-5">
+    <div class="card-body">
+        {{ post.content|safe }}
+    </div>
+</div>
+{% endblock %}

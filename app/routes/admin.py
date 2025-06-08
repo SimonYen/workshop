@@ -75,6 +75,7 @@ def blog_create():
         return redirect(url_for("admin.blog_index"))
     return render_template("blog/editor.html", form=form)
 
+
 @login_required
 @admin_bp.route("/blog/edit/<int:post_id>", methods=["GET", "POST"])
 def blog_edit(post_id):
@@ -83,7 +84,7 @@ def blog_edit(post_id):
     :param post_id: 博客ID
     :return: 渲染编辑博客模板
     """
-    post:Post = Post.get_or_none(Post.id == post_id)
+    post: Post = Post.get_or_none(Post.id == post_id)
     if not post:
         flash("博客不存在", "danger")
         return redirect(url_for("admin.blog_index"))
@@ -107,6 +108,22 @@ def blog_edit(post_id):
         return redirect(url_for("admin.blog_index"))
     return render_template("blog/editor.html", form=form, post=post)
 
+
+@admin_bp.route("/blog/view/<int:post_id>")
+def blog_view(post_id):
+    """
+    查看博客详情
+    :param post_id: 博客ID
+    :return: 渲染博客详情模板
+    """
+    post: Post = Post.get_or_none(Post.id == post_id)
+    if not post:
+        flash("博客不存在", "danger")
+        return redirect(url_for("admin.blog_index"))
+    # 渲染模板
+    return render_template("blog/detail.html", post=post)
+
+
 @login_required
 @admin_bp.route("/blog/delete/<int:post_id>")
 def blog_delete(post_id):
@@ -115,7 +132,7 @@ def blog_delete(post_id):
     :param post_id: 博客ID
     :return: 重定向到博客主页
     """
-    post:Post = Post.get_or_none(Post.id == post_id)
+    post: Post = Post.get_or_none(Post.id == post_id)
     if not post:
         flash("博客不存在", "danger")
         return redirect(url_for("admin.blog_index"))
@@ -126,7 +143,7 @@ def blog_delete(post_id):
             pass
     # 查找出博客内容中的所有图片
     soup = BeautifulSoup(post.content, "html.parser")
-    img_srcs = [img['src'] for img in soup.find_all('img') if img.has_attr('src')]
+    img_srcs = [img["src"] for img in soup.find_all("img") if img.has_attr("src")]
     # 删除博客内容中的所有图片
     for img_src in img_srcs:
         img_path = os.path.join("app/static/blog/ck", img_src.split("/")[-1])
@@ -148,12 +165,12 @@ def blog_cover(post_id):
     :param post_id: 博客ID
     :return: 重定向到博客主页
     """
-    post:Post = Post.get_or_none(Post.id == post_id)
+    post: Post = Post.get_or_none(Post.id == post_id)
     if not post:
         flash("博客不存在", "danger")
         return redirect(url_for("admin.blog_index"))
     # 取出封面文件
-    f= request.files.get("cover")
+    f = request.files.get("cover")
     if not f:
         flash("请上传封面", "danger")
         return redirect(url_for("admin.blog_index"))
@@ -171,16 +188,17 @@ def blog_cover(post_id):
     if post.cover:
         # 删除旧封面
         try:
-            os.remove(os.path.join("app/static/blog/cover", post.cover))
+            os.remove(os.path.join("app/static/blog/cover", post.cover.split("/")[-1]))
         except FileNotFoundError:
             pass
-    post.cover = filename
-    post.save()
     # 保存新封面
     f.save(os.path.join("app/static/blog/cover", filename))
+    post.cover = "/static/blog/cover/" + filename
+    post.save()
     # 返回成功消息
     flash(f"{post.title}封面上传成功", "success")
     return redirect(url_for("admin.blog_index"))
+
 
 @login_required
 @admin_bp.route("/blog/archive")

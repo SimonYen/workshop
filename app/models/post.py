@@ -3,6 +3,7 @@ from . import BaseModel
 from .admin import Admin
 from datetime import datetime
 
+
 class Post(BaseModel):
     """
     帖子模型类
@@ -18,13 +19,14 @@ class Post(BaseModel):
     author = ForeignKeyField(Admin, backref="posts", verbose_name="作者")
     tags = CharField(verbose_name="标签", null=True)
     archives = CharField(verbose_name="归档", null=True)
-    created_at = DateTimeField(
-        default=datetime.now, verbose_name="创建时间"
-    )
-    updated_at = DateTimeField(
-        default=datetime.now, verbose_name="更新时间"
-    )
+    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")
+    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")
 
     class Meta:
         # 这里的索引是为了加快查询速度
         indexes = ((("title",), True),)
+
+    # 重载save方法
+    def save(self, *args, **kwargs):
+        self.updated_at = datetime.now()
+        return super(Post, self).save(*args, **kwargs)
