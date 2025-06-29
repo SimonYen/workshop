@@ -21,3 +21,5 @@ app/static/blog
 blog.tar.gz
 
 .python-version
+
+.idea/

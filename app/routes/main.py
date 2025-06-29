@@ -11,6 +11,7 @@ from flask_ckeditor import upload_fail, upload_success
 from app.utils.secure_filename import secure_filename
 from app.models.post import Post
 from app.models.archive import Archive
+from app.utils.weather import WeatherNow
 
 # 创建蓝图实例
 main_bp = Blueprint("main", __name__)
@@ -19,7 +20,23 @@ main_bp = Blueprint("main", __name__)
 # 定义路由
 @main_bp.route("/")
 def home():
-    return render_template("home.html")
+    # 获得数据库里帖子数量
+    post_count = Post.select().count()
+    archive_count = Archive.select().count()
+    # 获取当前天气信息
+    weather_now = None
+    try:
+        weather_now = WeatherNow("101250109")  # 长沙市岳麓区
+        weather_now.fetch_weather()
+        weather_now.fetch_warning()
+    except Exception as e:
+        flash(f"获取信息失败: {e}", "warning")
+    return render_template(
+        "home.html",
+        weather=weather_now,
+        post_count=post_count,
+        archive_count=archive_count,
+    )
 
 
 @main_bp.route("/about")

@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.13.4",
     "black>=25.1.0",
+    "bleach>=6.2.0",
     "bootstrap-flask>=2.5.0",
     "flask>=3.1.1",
     "flask-ckeditor>=1.0.0",
@@ -14,6 +15,7 @@ dependencies = [
     "flask-moment>=1.0.6",
     "flask-wtf>=1.2.2",
     "peewee>=3.18.1",
+    "requests>=2.32.4",
 ]
 
 

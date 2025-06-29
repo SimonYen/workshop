@@ -3,6 +3,52 @@
 {% block title %}看板{% endblock %}
 
 {% block content %}
-<h1>Welcome to the Home Page</h1>
-<p>This is the home page of the Flask application.</p>
-{% endblock %}
+<div class="container-fluid">
+    <div class="row">
+        <!--显示文章统计-->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-2">文章统计</h5>
+                    <p>共写了{{post_count}}篇文章。</p>
+                    <p>拥有{{archive_count}}个文章存档。</p>
+                </div>
+            </div>
+        </div>
+        <!--显示天气-->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">岳麓区实时天气</h5>
+                    {% if weather %}
+                    <i class="qi-{{ weather.icon_code }}"></i>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{{ weather.temperature }} ℃</h6>
+                    <p class="card-text">{{ weather.description }}</p>
+                    <p class="card-text">湿度: {{ weather.humidity }}%</p>
+                    <p class="card-text">风速: {{ weather.wind_speed }} km/h</p>
+                    <p class="card-text">风向: {{ weather.wind_direction }}</p>
+                    <p class="card-text">体感温度: {{ weather.body_temperature }} ℃</p>
+                    <p class="card-text">能见度：{{ weather.visibility }} km</p>
+                    <p class="card-text">气压：{{ weather.pressure }} 百帕</p>
+                    <p class="card-text">更新时间：{{ weather.update_time }}</p>
+                    {% else %}
+                    <p class="card-text text-danger">无法获取天气信息</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">预警信息</h5>
+                    {% if weather and weather.warning_title %}
+                    <h2 class="card-text">{{ weather.warning_title }}</h2>
+                    <h3 class="card-text">{{ weather.warning_text }}</h3>
+                    <p class="card-text">发布者: {{ weather.warning_sender }}</p>
+                    <p class="card-text">发布时间: {{ weather.warning_publish_time }}</p>
+                    {% else %}
+                    <p class="card-text text-danger">暂无预警信息</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
