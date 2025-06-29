@@ -1,0 +1,103 @@
+{% extends "layout/base.html" %}
+
+{% block title %}文章存档{% endblock %}
+
+{% block head %}
+{{ moment.include_moment() }}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-grid gap-2">
+            <a class="btn btn-primary btn-lg" role="button" href="{{ url_for('admin.archive_create')}}">➕新建存档</a>
+            <button class="btn btn-secondary btn-lg" type="button">🔍搜索存档</button>
+        </div>
+    </div>
+</div>
+<!--遍历所有存档-->
+<div class="mt-5 mb-5">
+    <div class="accordion" id="accordionExample">
+        {% for archive in archives %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{ archive.id }}" aria-expanded="true"
+                    aria-controls="collapse{{ archive.id }}">
+                    [{{archive.id}}] {{ archive.title }}
+                </button>
+            </h2>
+            <div id="collapse{{ archive.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>摘要:</strong> {{ archive.summary or "无摘要" }}<br>
+                    <strong>创建时间:</strong> {{ archive.created_at.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                    <strong>更新时间:</strong> {{ archive.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}<br>
+                    <strong>关联帖子:</strong>
+                    {% if archive.posts %}
+                    <ul>
+                        {% for post in archive.posts %}
+                        <li><a href="{{ url_for('admin.blog_view', post_id=post.id) }}" target="_blank">《{{ post.title
+                                }}》</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    无关联帖子
+                    {% endif %}
+                    <br>
+                    <strong>存档操作:</strong>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary"
+                            href="{{ url_for('admin.archive_edit', archive_id=archive.id) }}">编辑该存档</a>
+                        <a class="btn btn-danger"
+                            href="{{url_for('admin.archive_delete', archive_id=archive.id)}}">删除该存档</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseNoArchives" aria-expanded="true" aria-controls="collapseNoArchives">
+                    无存档
+                </button>
+            </h2>
+            <div id="collapseNoArchives" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <strong>当前没有任何存档。</strong> 请点击上方按钮新建存档。
+                </div>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+</div>
+<!--分页-->
+<div class="d-flex justify-content-center">
+    <nav aria-label="page-navigation">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="{{url_for('admin.archive_index', page = 1)}}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% if prev_page %}
+            <li class="page-item"><a class="page-link"
+                    href="{{url_for('admin.archive_index', page = prev_page)}}">{{prev_page}}</a></li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link" href="{{url_for('admin.archive_index', page = current_page)}}"
+                    aria-current="page">{{current_page}}</a>
+            </li>
+            {% if next_page %}
+            <li class="page-item"><a class="page-link"
+                    href="{{url_for('admin.archive_index', page = next_page)}}">{{next_page}}</a></li>
+            {% endif %}
+            <li class="page-item">
+                <a class="page-link" href="{{url_for('admin.archive_index', page = total_pages)}}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}

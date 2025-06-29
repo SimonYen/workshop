@@ -1,0 +1,34 @@
+{% extends "layout/base.html" %}
+
+
+{% block title %}
+
+{% if archive %}
+修改存档《{{ archive.title }}》
+{% else %}
+新建存档
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+{% from 'bootstrap5/form.html' import render_field %}
+
+
+{% if archive %}
+<form method="post" action="{{ url_for('admin.archive_edit',archive_id = archive.id) }}">
+    {{ form.csrf_token() }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.summary) }}
+    {{ render_field(form.submit) }}
+</form>
+{% else%}
+<form method="post" action="{{ url_for('admin.archive_create') }}">
+    {{ form.csrf_token() }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.summary) }}
+    {{ render_field(form.submit) }}
+</form>
+{% endif %}
+
+{% endblock %}

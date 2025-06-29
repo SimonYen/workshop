@@ -12,7 +12,7 @@
         <div class="d-grid gap-2">
             <a class="btn btn-primary btn-lg" role="button" href="{{ url_for('admin.blog_create')}}">➕新建文章</a>
             <button class="btn btn-secondary btn-lg" type="button">🔍搜索文章</button>
-            <a class="btn btn-info btn-lg" role="button" href="{{ url_for('admin.blog_archive')}}">🚀导出存档</a>
+            <a class="btn btn-info btn-lg" role="button" href="{{ url_for('admin.blog_archive')}}">🚀导出文章</a>
         </div>
     </div>
 </div>
@@ -45,12 +45,17 @@
                 <p class="card-text">
                     <small class="text-muted">标签: {{ post.tags }}</small>
                 </p>
+                <p class="card-text">
+                    <small class="text-muted">存档: {{ post.archives }}</small>
+                </p>
             </div>
             <div class="card-body">
                 <!--至中显示-->
                 <div class="d-flex justify-content-center">
-                    <a href="{{url_for('admin.blog_view',post_id=post.id)}}" class="btn btn-light me-1">预览</a>
-                    <a href="{{url_for('admin.blog_edit',post_id=post.id)}}" class="btn btn-primary me-1">编辑</a>
+                    <a href="{{url_for('admin.blog_view',post_id=post.id)}}" target="_blank"
+                        class="btn btn-light me-1">预览</a>
+                    <a href="{{url_for('admin.blog_edit',post_id=post.id)}}" target="_blank"
+                        class="btn btn-primary me-1">编辑</a>
                     <a href="#" class="btn btn-info me-1" data-bs-toggle="modal"
                         data-bs-target="#cover-modal-{{post.id}}">封面</a>
                     <a href="#" class="btn btn-warning me-1">背景</a>
