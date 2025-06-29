@@ -1,19 +1,67 @@
 {% extends "layout/base.html" %}
 
-{% block title %}文章存档{% endblock %}
+{% block title %}{{query}}的搜索结果{% endblock %}
 
 {% block head %}
 {{ moment.include_moment() }}
 {% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <div class="d-grid gap-2">
-            <a class="btn btn-primary btn-lg" role="button" href="{{ url_for('admin.archive_create')}}">➕新建存档</a>
+<h1>{{query}}的搜索结果：</h1>
+<!-- 下划线 -->
+<hr>
+<h2>文章结果：</h2>
+<!--遍历所有帖子-->
+<div class="row mt-5">
+    {% for post in posts %}
+    <div class="col-md-4 col-lg-3 col-sm-6 mb-4">
+        <div class="card">
+            {% if post.cover %}
+            <img src="{{ post.cover }}" class="card-img-top" alt="{{ post.title }}">
+            {% else %}
+            <img src="" class="card-img-top" alt="{{ post.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">作者：{{ post.author.username }}</h6>
+                <p class="card-text">{{ post.summary }}</p>
+                <p class="card-text">
+                    <small class="text-muted">更新于 {{ moment(post.updated_at, local = True).format('YYYY年MM月DD日
+                        hh:mm:ss')
+                        }}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">创建于 {{ moment(post.created_at, local = True).format('YYYY年MM月DD日
+                        hh:mm:ss') }}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">是否置顶: {{ post.is_top }}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">标签: {{ post.tags }}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">存档: {{ post.archives }}</small>
+                </p>
+            </div>
+            <div class="card-body">
+                <!--至中显示-->
+                <div class="d-flex justify-content-center">
+                    <a href="{{url_for('admin.blog_view',post_id=post.id)}}" target="_blank"
+                        class="btn btn-light me-1">预览</a>
+                </div>
+            </div>
         </div>
     </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info" role="alert">
+            未搜寻到与 "{{ query }}" 相关的文章。
+        </div>
+    </div>
+    {% endfor %}
 </div>
+<h2 class="mt-1">存档结果：</h2>
 <!--遍历所有存档-->
 <div class="mt-5 mb-5">
     <div class="accordion" id="accordionExample">
@@ -42,14 +90,6 @@
                     {% else %}
                     无关联帖子
                     {% endif %}
-                    <br>
-                    <strong>存档操作:</strong>
-                    <div class="d-grid gap-2">
-                        <a class="btn btn-primary"
-                            href="{{ url_for('admin.archive_edit', archive_id=archive.id) }}">编辑该存档</a>
-                        <a class="btn btn-danger"
-                            href="{{url_for('admin.archive_delete', archive_id=archive.id)}}">删除该存档</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -63,40 +103,11 @@
             </h2>
             <div id="collapseNoArchives" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <strong>当前没有任何存档。</strong> 请点击上方按钮新建存档。
+                    <strong>未找到与{{query}}相关的存档。</strong>
                 </div>
             </div>
         </div>
         {% endfor%}
     </div>
-</div>
-<!--分页-->
-<div class="d-flex justify-content-center">
-    <nav aria-label="page-navigation">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="{{url_for('admin.archive_index', page = 1)}}" aria-label="First">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% if prev_page %}
-            <li class="page-item"><a class="page-link"
-                    href="{{url_for('admin.archive_index', page = prev_page)}}">{{prev_page}}</a></li>
-            {% endif %}
-            <li class="page-item active">
-                <a class="page-link" href="{{url_for('admin.archive_index', page = current_page)}}"
-                    aria-current="page">{{current_page}}</a>
-            </li>
-            {% if next_page %}
-            <li class="page-item"><a class="page-link"
-                    href="{{url_for('admin.archive_index', page = next_page)}}">{{next_page}}</a></li>
-            {% endif %}
-            <li class="page-item">
-                <a class="page-link" href="{{url_for('admin.archive_index', page = total_pages)}}" aria-label="Last">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </div>
 {% endblock %}

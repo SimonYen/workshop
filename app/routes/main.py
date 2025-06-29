@@ -1,6 +1,16 @@
-from flask import Blueprint, render_template, send_from_directory, request, url_for
+from flask import (
+    Blueprint,
+    render_template,
+    send_from_directory,
+    request,
+    url_for,
+    flash,
+    redirect,
+)
 from flask_ckeditor import upload_fail, upload_success
 from app.utils.secure_filename import secure_filename
+from app.models.post import Post
+from app.models.archive import Archive
 
 # 创建蓝图实例
 main_bp = Blueprint("main", __name__)
@@ -61,3 +71,27 @@ def ck_upload():
     else:
         # 返回失败信息
         return upload_fail("上传失败，请重试")
+
+
+@main_bp.route("/search")
+def search():
+    """
+    搜索功能
+    :return: 返回搜索结果页面
+    """
+    query = request.args.get("query", "")
+    if not query:
+        flash("请输入搜索内容", "warning")
+        return redirect(url_for("main.home"))
+
+    # 先找文章
+    posts = Post.select().where(
+        Post.title.contains(query) | Post.content.contains(query)
+    )
+    # 再找存档
+    archives = Archive.select().where(
+        Archive.title.contains(query) | Archive.summary.contains(query)
+    )
+    return render_template(
+        "search_results.html", query=query, posts=posts, archives=archives
+    )

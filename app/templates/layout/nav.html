@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg" style="background-color: #babbbe;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         {% if current_user.is_authenticated %}
         <a class="navbar-brand" href="{{url_for('main.home')}}">{{current_user.username}}的工作台</a>
@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.home') }}">📊看板</a>
+                    <a class="nav-link" href="{{ url_for('main.home') }}">📊看板</a>
                 </li>
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
@@ -20,6 +20,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('admin.archive_index')}}">🗃存档管理</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">🔎搜索</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout')}}">🔑登出</a>
@@ -36,3 +39,24 @@
         </div>
     </div>
 </nav>
+
+<!-- 搜索Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="searchModalLabel">🔎</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('main.search')}}" method="get">
+                    <div class="mb-3">
+                        <label for="searchQuery" class="form-label">请输入搜索内容：</label>
+                        <input type="text" class="form-control" id="searchQuery" name="query" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
