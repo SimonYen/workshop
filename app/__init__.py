@@ -4,6 +4,7 @@ from flask_login import LoginManager
 from flask_ckeditor import CKEditor
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
+from flask_dropzone import Dropzone
 from config import config
 from .models import DB, init_db, admin
 
@@ -43,6 +44,9 @@ def create_app(config_name="default"):
     app.config["BOOTSTRAP_SERVE_LOCAL"] = True
     app.config["BOOTSTRAP_BOOTSWATCH_THEME"] = "zephyr"
     login_manager.init_app(app)
+    Dropzone(app)
+    app.config["DROPZONE_SERVE_LOCAL"] = True
+    app.config["DROPZONE_ENABLE_CSRF"] = True
     CKEditor(app)
     app.config["CKEDITOR_SERVE_LOCAL"] = True
     app.config["CKEDITOR_PKG_TYPE"] = "full"

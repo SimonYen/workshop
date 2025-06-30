@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, url_for, redirect, flash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from app.forms.login import LoginForm
 from app.models.admin import Admin
 
@@ -26,6 +26,7 @@ def login():
 
 
 @auth_bp.route("/logout")
+@login_required
 def logout():
     """
     处理用户登出请求

@@ -8,8 +8,10 @@
     <!--引入天气图标-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/qweather-icons.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pace.css') }}">
     <!-- 引入 Bootstrap CSS -->
     {{ bootstrap.load_css() }}
+    {{ dropzone.load_css() }}
     {% block head %}{% endblock %}
 </head>
 
@@ -30,6 +32,9 @@
 
     <!-- 引入 Bootstrap JS 和依赖 -->
     {{bootstrap.load_js()}}
+    {{ dropzone.load_js() }}
+    {{ dropzone.config(DROPZONE_DEFAULT_MESSAGE="拖拽文件在此上传",DROPZONE_MAX_FILE_SIZE=25) }}
+    <script src="{{ url_for('static', filename='js/pace.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 

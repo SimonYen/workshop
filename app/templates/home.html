@@ -14,6 +14,31 @@
                     <p>拥有{{archive_count}}个文章存档。</p>
                 </div>
             </div>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-2">Filebin</h5>
+                    <div>
+                        {{ dropzone.create(action='/') }}
+                    </div>
+                    {% for file in file_list %}
+                    <div class="row">
+                        <div class="col-4 mt-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ file }}</h6>
+                                    <a href="{{ url_for('main.filebin_download', filename=file) }}"
+                                        class="btn btn-primary btn-sm">下载</a>
+                                    <a href="{{ url_for('main.filebin_delete', filename=file) }}"
+                                        class="btn btn-danger btn-sm">删除</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="card-text text-warning">暂无文件存储</p>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         <!--显示天气-->
         <div class="col-md-4">
@@ -45,7 +70,7 @@
                     <p class="card-text">发布者: {{ weather.warning_sender }}</p>
                     <p class="card-text">发布时间: {{ weather.warning_publish_time }}</p>
                     {% else %}
-                    <p class="card-text text-danger">暂无预警信息</p>
+                    <p class="card-text text-success">暂无预警信息</p>
                     {% endif %}
                 </div>
             </div>

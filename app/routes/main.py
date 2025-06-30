@@ -7,24 +7,36 @@ from flask import (
     flash,
     redirect,
 )
+from flask_login import login_required
 from flask_ckeditor import upload_fail, upload_success
 from app.utils.secure_filename import secure_filename
 from app.models.post import Post
 from app.models.archive import Archive
 from app.utils.weather import WeatherNow
+from app.utils.list_files import get_files_in_filebin
 
 # 创建蓝图实例
 main_bp = Blueprint("main", __name__)
 
 
 # 定义路由
-@main_bp.route("/")
+@main_bp.route("/", methods=["GET", "POST"])
+@login_required
 def home():
+    if request.method == "POST":
+        f = request.files.get("file")
+        if f:
+            f.save(f"app/static/filebin/{f.filename}")
+            flash(f"{f.filename}保存成功", "success")
+        else:
+            flash("文件为空！", "warning")
     # 获得数据库里帖子数量
     post_count = Post.select().count()
     archive_count = Archive.select().count()
     # 获取当前天气信息
     weather_now = None
+    # filebin存储的文件
+    file_list = get_files_in_filebin()
     try:
         weather_now = WeatherNow("101250109")  # 长沙市岳麓区
         weather_now.fetch_weather()
@@ -36,6 +48,7 @@ def home():
         weather=weather_now,
         post_count=post_count,
         archive_count=archive_count,
+        file_list=file_list,
     )
 
 
@@ -44,7 +57,38 @@ def about():
     return render_template("about.html")
 
 
+@main_bp.route("/filebin/download/<path:filename>")
+@login_required
+def filebin_download(filename):
+    from pathlib import Path
+
+    root = Path(".")
+    folder = root / "static/filebin"
+    return send_from_directory(folder, filename)
+
+
+@main_bp.route("/filebin/<path:filename>")
+@login_required
+def filebin_delete(filename):
+    """
+    删除文件
+    :param filename: 文件名
+    :return: 重定向到主页
+    """
+
+    import os
+
+    file_path = f"app/static/filebin/{filename}"
+    if os.path.exists(file_path):
+        os.remove(file_path)  # 删除文件
+        flash(f"{filename} 删除成功", "success")
+    else:
+        flash(f"{filename} 不存在", "warning")
+    return redirect(url_for("main.home"))
+
+
 @main_bp.route("/static/blog/ck/<path:filename>")
+@login_required
 def ck_files(filename):
     """
     处理CKEditor上传的文件
@@ -60,6 +104,7 @@ def ck_files(filename):
 
 
 @main_bp.route("/ck_upload", methods=["POST"])
+@login_required
 def ck_upload():
     """
     处理CKEditor上传的文件

@@ -19,8 +19,8 @@ from app.utils.packageing import packaging_file
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
-@login_required
 @admin_bp.route("/blog/index")
+@login_required
 def blog_index():
     """
     博客管理首页
@@ -51,8 +51,8 @@ def blog_index():
     )
 
 
-@login_required
 @admin_bp.route("/blog/create", methods=["GET", "POST"])
+@login_required
 def blog_create():
     """
     创建博客
@@ -78,8 +78,8 @@ def blog_create():
     return render_template("blog/editor.html", form=form)
 
 
-@login_required
 @admin_bp.route("/blog/edit/<int:post_id>", methods=["GET", "POST"])
+@login_required
 def blog_edit(post_id):
     """
     编辑博客
@@ -128,8 +128,8 @@ def blog_view(post_id):
     return render_template("blog/detail.html", post=post)
 
 
-@login_required
 @admin_bp.route("/blog/delete/<int:post_id>")
+@login_required
 def blog_delete(post_id):
     """
     删除博客
@@ -161,8 +161,8 @@ def blog_delete(post_id):
     return redirect(url_for("admin.blog_index"))
 
 
-@login_required
 @admin_bp.route("/blog/cover/<int:post_id>", methods=["POST"])
+@login_required
 def blog_cover(post_id):
     """
     上传博客封面
@@ -204,8 +204,8 @@ def blog_cover(post_id):
     return redirect(url_for("admin.blog_index"))
 
 
-@login_required
 @admin_bp.route("/blog/archive")
+@login_required
 def blog_archive():
     """
     博客归档下载
@@ -221,8 +221,8 @@ def blog_archive():
     )
 
 
-@login_required
 @admin_bp.route("/archive/index")
+@login_required
 def archive_index():
     """
     存档管理首页
@@ -262,8 +262,8 @@ def archive_index():
     )
 
 
-@login_required
 @admin_bp.route("/archive/create", methods=["GET", "POST"])
+@login_required
 def archive_create():
     """
     创建存档
@@ -284,8 +284,8 @@ def archive_create():
     return render_template("archive/editor.html", form=form)
 
 
-@login_required
 @admin_bp.route("/archive/edit/<int:archive_id>", methods=["GET", "POST"])
+@login_required
 def archive_edit(archive_id):
     """
     编辑存档
@@ -311,8 +311,8 @@ def archive_edit(archive_id):
     return render_template("archive/editor.html", form=form, archive=archive)
 
 
-@login_required
 @admin_bp.route("/archive/delete/<int:archive_id>")
+@login_required
 def archive_delete(archive_id):
     """
     删除存档

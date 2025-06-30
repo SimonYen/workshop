@@ -23,3 +23,5 @@ blog.tar.gz
 .python-version
 
 .idea/
+
+app/static/filebin
