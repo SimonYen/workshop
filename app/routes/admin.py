@@ -15,6 +15,7 @@ from app.models.post import Post
 from app.models.archive import Archive
 from app.utils.secure_filename import secure_filename
 from app.utils.packageing import packaging_file
+from app.utils.file_operation import delete_file
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -141,20 +142,18 @@ def blog_delete(post_id):
         flash("博客不存在", "danger")
         return redirect(url_for("admin.blog_index"))
     if post.cover:
-        try:
-            os.remove(os.path.join("app/static/blog/cover", post.cover))
-        except FileNotFoundError:
-            pass
+        # 去掉static前缀
+        temp_list = post.cover.split("/")[2:]
+        temp_path = "/".join(temp_list)
+        delete_file(temp_path)  # 删除封面图片
     # 查找出博客内容中的所有图片
     soup = BeautifulSoup(post.content, "html.parser")
     img_srcs = [img["src"] for img in soup.find_all("img") if img.has_attr("src")]
     # 删除博客内容中的所有图片
     for img_src in img_srcs:
-        img_path = os.path.join("app/static/blog/ck", img_src.split("/")[-1])
-        try:
-            os.remove(img_path)
-        except FileNotFoundError:
-            pass
+        img_path = img_src.split("/")[2:]  # 去掉static前缀
+        img_path = "/".join(img_path)
+        delete_file(img_path)  # 删除图片
     # 删除博客
     post.delete_instance()
     flash("博客删除成功", "success")
@@ -191,10 +190,10 @@ def blog_cover(post_id):
     # 检查是否存在旧封面
     if post.cover:
         # 删除旧封面
-        try:
-            os.remove(os.path.join("app/static/blog/cover", post.cover.split("/")[-1]))
-        except FileNotFoundError:
-            pass
+        # 去掉static前缀
+        temp_list = post.cover.split("/")[1:]
+        temp_path = "/".join(temp_list)
+        delete_file(temp_path)  # 删除封面图片
     # 保存新封面
     f.save(os.path.join("app/static/blog/cover", filename))
     post.cover = "/static/blog/cover/" + filename

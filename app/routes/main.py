@@ -13,7 +13,7 @@ from app.utils.secure_filename import secure_filename
 from app.models.post import Post
 from app.models.archive import Archive
 from app.utils.weather import WeatherNow
-from app.utils.list_files import get_files_in_filebin
+from app.utils.file_operation import get_files_in_filebin, delete_file
 
 # 创建蓝图实例
 main_bp = Blueprint("main", __name__)
@@ -76,11 +76,7 @@ def filebin_delete(filename):
     :return: 重定向到主页
     """
 
-    import os
-
-    file_path = f"app/static/filebin/{filename}"
-    if os.path.exists(file_path):
-        os.remove(file_path)  # 删除文件
+    if delete_file(f"filebin/{filename}"):
         flash(f"{filename} 删除成功", "success")
     else:
         flash(f"{filename} 不存在", "warning")
