@@ -21,11 +21,11 @@
                         {{ dropzone.create(action='/') }}
                     </div>
                     {% for file in file_list %}
-                    <div class="row">
-                        <div class="col-4 mt-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="card-title">{{ file }}</h6>
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <div class="input-group">
+                                <h6>{{ file }}</h6>
+                                <div class="ms-auto">
                                     <a href="{{ url_for('main.filebin_download', filename=file) }}"
                                         class="btn btn-primary btn-sm">下载</a>
                                     <a href="{{ url_for('main.filebin_delete', filename=file) }}"
